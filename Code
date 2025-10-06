@@ -1,0 +1,83 @@
+using System;
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        string[] shapes = { "Rock", "Paper", "Scissors", "Lizard", "Spock" };
+        // Rock = 0, Paper = 1, Scissors = 2, Lizard = 3, Spock = 4
+
+        int playerscore = 0;
+        int agentscore = 0;
+        const int winningscore = 3;
+
+        Console.WriteLine("Welcome to the Rock, Paper, Scissors, Spock and Lizard!");
+
+        while (playerscore < winningscore && agentscore < winningscore)
+        {
+            string playerchoice = "";
+            bool validchoice = false;
+
+            //Player chooses form
+            while (!validchoice)
+            {
+                Console.WriteLine("What would you like to do? First letter should always be a capital letter");
+                playerchoice = Console.ReadLine();
+
+                foreach (string shape in shapes)
+                {
+                    if (shape == playerchoice)
+                    {
+                        validchoice = true;
+                        break;
+                    }
+                }
+
+                if (!validchoice)
+                {
+                    Console.WriteLine("That shape doesn't exist.");
+                }
+            }
+
+            //Agent chooses form
+            int agentIndex = Random.Shared.Next(shapes.Length);
+            string agentchoice = shapes[agentIndex];
+            Console.WriteLine($"Agent chose:{agentchoice}");
+
+            //Find index for player choice
+            int playerIndex = Array.IndexOf(shapes, playerchoice);
+
+            //Calculate
+            //Spiller wins on: -4, -2, 1, 3
+            // Agent wins on:   -3, -1, 2, 4
+            int result = agentIndex - playerIndex;
+            if (result == 0)
+            {
+                Console.WriteLine($"Draw");
+            }
+            else if (result == -4 || result == -2 || result == 1 || result == 3)
+            {
+                Console.WriteLine($"You win this round!");
+                playerscore++;
+            }
+            else
+            {
+                Console.WriteLine("Agent wins this round!");
+                agentscore++;
+            }
+
+            //Show score
+            Console.WriteLine($"Score-Player: {playerscore},Agent: {agentscore}");
+        }
+
+        // Game is over
+        if (playerscore == winningscore)
+        {
+            Console.WriteLine("You won the game!");
+        }
+        else
+        {
+            Console.WriteLine("You lost the game!");
+        }
+    }
+}
